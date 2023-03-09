@@ -16,18 +16,18 @@ struct OCRView: UIViewControllerRepresentable {
         Coordinator(self)
     }
 
-    func makeUIViewController(context: Context) -> ViewController {
-        let viewController = ViewController()
+    func makeUIViewController(context: Context) -> OCRScannerViewController {
+        let viewController = OCRScannerViewController()
         viewController.delegate = context.coordinator
         return viewController
     }
 
-    func updateUIViewController(_ uiViewController: ViewController, context: Context) {}
+    func updateUIViewController(_ uiViewController: OCRScannerViewController, context: Context) {}
 
     class Coordinator: NSObject, GFLiveScannerDelegate {
         func capturedStrings(strings: [String]) {
             print(strings)
-            parent.scannedText = strings.joined(separator: ",")
+            parent.scannedText = strings.joined(separator: "\n")
         }
 
         func liveCaptureEnded(withError: Error?) {
@@ -39,6 +39,10 @@ struct OCRView: UIViewControllerRepresentable {
         init(_ parent: OCRView) {
             self.parent = parent
             super.init()
+        }
+
+        deinit {
+            print("### deinit coordinator")
         }
     }
 }

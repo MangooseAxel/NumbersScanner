@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  OCRScannerViewController.swift
 //  NumbersScanner
 //
 //  Created by Oleksandr Dolomanov on 06.03.2023.
@@ -10,7 +10,7 @@ import SwiftUI
 import AVFoundation
 import Vision
 
-class ViewController: UIViewController {
+class OCRScannerViewController: UIViewController {
     private var permissionGranted = false // Flag for permission
     private let captureSession = AVCaptureSession()
     private let sessionQueue = DispatchQueue(label: "sessionQueue")
@@ -21,6 +21,10 @@ class ViewController: UIViewController {
 
     // For detector
     private var videoOutput = AVCaptureVideoDataOutput()
+
+    deinit {
+        print("### deinit ViewController")
+    }
 
     override func viewDidLoad() {
         checkPermission()
@@ -140,7 +144,7 @@ class ViewController: UIViewController {
     }
 }
 
-extension ViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
+extension OCRScannerViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
     func captureOutput(
         _ output: AVCaptureOutput,
         didOutput sampleBuffer: CMSampleBuffer,

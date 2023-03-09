@@ -13,8 +13,7 @@
 		FA7563CF29B6625300B5C947 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA7563CE29B6625300B5C947 /* Assets.xcassets */; };
 		FA7563D229B6625300B5C947 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA7563D129B6625300B5C947 /* Preview Assets.xcassets */; };
 		FA7563F529B67D2500B5C947 /* OCRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7563F429B67D2500B5C947 /* OCRView.swift */; };
-		FA75640529B688A100B5C947 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA75640429B688A100B5C947 /* ViewController.swift */; };
-		FA75640729B688C100B5C947 /* HostedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA75640629B688C100B5C947 /* HostedViewController.swift */; };
+		FA75640529B688A100B5C947 /* OCRScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA75640429B688A100B5C947 /* OCRScannerViewController.swift */; };
 		FA75640929B68AB800B5C947 /* GFLiveScannerUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA75640829B68AB800B5C947 /* GFLiveScannerUtils.swift */; };
 		FA75640B29B68AD600B5C947 /* GFOcrHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA75640A29B68AD600B5C947 /* GFOcrHelper.swift */; };
 /* End PBXBuildFile section */
@@ -28,8 +27,7 @@
 		FA7563D129B6625300B5C947 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		FA7563D829B6663F00B5C947 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		FA7563F429B67D2500B5C947 /* OCRView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRView.swift; sourceTree = "<group>"; };
-		FA75640429B688A100B5C947 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		FA75640629B688C100B5C947 /* HostedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostedViewController.swift; sourceTree = "<group>"; };
+		FA75640429B688A100B5C947 /* OCRScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRScannerViewController.swift; sourceTree = "<group>"; };
 		FA75640829B68AB800B5C947 /* GFLiveScannerUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GFLiveScannerUtils.swift; sourceTree = "<group>"; };
 		FA75640A29B68AD600B5C947 /* GFOcrHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GFOcrHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -71,8 +69,7 @@
 				FA7563CE29B6625300B5C947 /* Assets.xcassets */,
 				FA7563D029B6625300B5C947 /* Preview Content */,
 				FA7563F429B67D2500B5C947 /* OCRView.swift */,
-				FA75640429B688A100B5C947 /* ViewController.swift */,
-				FA75640629B688C100B5C947 /* HostedViewController.swift */,
+				FA75640429B688A100B5C947 /* OCRScannerViewController.swift */,
 				FA75640A29B68AD600B5C947 /* GFOcrHelper.swift */,
 				FA1552C929B927E70038985B /* CGImageExtension.swift */,
 			);
@@ -159,11 +156,10 @@
 			files = (
 				FA7563CD29B6625200B5C947 /* ContentView.swift in Sources */,
 				FA7563CB29B6625200B5C947 /* NumbersScannerApp.swift in Sources */,
-				FA75640729B688C100B5C947 /* HostedViewController.swift in Sources */,
 				FA1552CA29B927E70038985B /* CGImageExtension.swift in Sources */,
 				FA75640929B68AB800B5C947 /* GFLiveScannerUtils.swift in Sources */,
 				FA75640B29B68AD600B5C947 /* GFOcrHelper.swift in Sources */,
-				FA75640529B688A100B5C947 /* ViewController.swift in Sources */,
+				FA75640529B688A100B5C947 /* OCRScannerViewController.swift in Sources */,
 				FA7563F529B67D2500B5C947 /* OCRView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

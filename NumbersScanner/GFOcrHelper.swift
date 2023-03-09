@@ -16,9 +16,9 @@ public typealias GFOcrHelperCallback = (Result<[String], Error>) -> Void
 /// containing the CGImage to process and the callback to call
 /// once the OCR is done
 fileprivate struct GFOcrHelperRequest {
-    var image:CGImage
-    var orientation:CGImagePropertyOrientation?
-    var callback:GFOcrHelperCallback
+    var image: CGImage
+    var orientation: CGImagePropertyOrientation?
+    var callback: GFOcrHelperCallback
 }
 
 /// Helper class to get text from an image using Vision framework
@@ -28,7 +28,7 @@ fileprivate struct GFOcrHelperRequest {
 public class GFOcrHelper {
     public var useFastRecognition = false
     
-    public init(fastRecognition:Bool) {
+    public init(fastRecognition: Bool) {
         self.useFastRecognition = fastRecognition
     }
     /// Get an array of strings from a UIImage
@@ -44,6 +44,9 @@ public class GFOcrHelper {
             callback(.failure(genericError))
             return
         }
+        if imageSize == CGSize() {
+            imageSize = image.size
+        }
         addRequest(withImage: cgImage, orientation:nil, callback: callback)
     }
 
@@ -53,9 +56,14 @@ public class GFOcrHelper {
     ///   - orientation: The adjusted orientation of the image
     ///   - callback: the callback with a bool parameter indicating success
     ///                 and an optional array of string recognized in the image
-    public func getTextFromImage(_ image:CGImage,
-                          orientation:CGImagePropertyOrientation?,
-                          callback:@escaping GFOcrHelperCallback) {
+    public func getTextFromImage(
+        _ image: CGImage,
+        orientation: CGImagePropertyOrientation?,
+        callback: @escaping GFOcrHelperCallback
+    ) {
+        if imageSize == CGSize() {
+            imageSize = .init(width: image.width, height: image.height)
+        }
         addRequest(withImage: image, orientation:orientation, callback: callback)
     }
     
@@ -64,7 +72,8 @@ public class GFOcrHelper {
     private var genericError:Error {
         GFLiveScannerUtils.createError(withMessage: "cannot perform OCR on image", code: 0)
     }
-    private var pendingOCRRequests:[GFOcrHelperRequest] = []
+    private var pendingOCRRequests: [GFOcrHelperRequest] = []
+    private var imageSize: CGSize = .zero
     
     /// Add a request for OCR
     /// - Parameters:
@@ -76,7 +85,7 @@ public class GFOcrHelper {
         orientation: CGImagePropertyOrientation?,
         callback: @escaping GFOcrHelperCallback
     ) {
-        let request = GFOcrHelperRequest(image: image, orientation:orientation, callback: callback)
+        let request = GFOcrHelperRequest(image: image, orientation: orientation, callback: callback)
         pendingOCRRequests.append(request)
         if pendingOCRRequests.count == 1 {
             processOCRRequest(request)
@@ -99,6 +108,7 @@ public class GFOcrHelper {
         }
 
         let visionRequest = VNRecognizeTextRequest(completionHandler: recognizeTextHandler)
+
         visionRequest.recognitionLevel = useFastRecognition ? .fast : .accurate
 
         do {
@@ -119,11 +129,26 @@ public class GFOcrHelper {
             return
         }
 
-        let recognizedStrings = observations.compactMap { observation in
-            return observation.topCandidates(1).first?.string
-        }
+        // Get the center of the image
+        let centerX = imageSize.width / 2
+        let centerY = imageSize.height / 2
+        
+        // Sort the recognized strings based on their distance from the center of the image
+        let recognizedStrings = observations.compactMap { observation -> (String, CGFloat)? in
+            guard let candidate = observation.topCandidates(1).first else { return nil }
 
-        currentRequestProcessed(strings: recognizedStrings)
+            let boundingBox = observation.boundingBox
+            let boundingBoxCenterX = boundingBox.origin.x + (boundingBox.size.width / 2)
+            let boundingBoxCenterY = boundingBox.origin.y + (boundingBox.size.height / 2)
+            let distance = sqrt(pow((centerX - boundingBoxCenterX), 2) + pow((centerY - boundingBoxCenterY), 2))
+
+            return (candidate.string, distance)
+        }
+            .sorted { $0.1 < $1.1 } // sort by distance
+        
+        // Return the closest recognized string or nil if no strings were recognized
+        let closestString = recognizedStrings.first?.0
+        currentRequestProcessed(strings: closestString != nil ? [closestString!] : nil)
     }
     
     /// Called when the current request has been processed
