@@ -109,7 +109,7 @@ public class GFOcrHelper {
 
         let visionRequest = VNRecognizeTextRequest(completionHandler: recognizeTextHandler)
 
-        visionRequest.recognitionLevel = useFastRecognition ? .fast : .accurate
+        visionRequest.recognitionLevel = .accurate
 
         do {
             try requestHandler.perform([visionRequest])
@@ -132,7 +132,7 @@ public class GFOcrHelper {
         // Get the center of the image
         let centerX = imageSize.width / 2
         let centerY = imageSize.height / 2
-        
+
         // Sort the recognized strings based on their distance from the center of the image
         let recognizedStrings = observations.compactMap { observation -> (String, CGFloat)? in
             guard let candidate = observation.topCandidates(1).first else { return nil }

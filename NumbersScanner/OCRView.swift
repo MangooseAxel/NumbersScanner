@@ -27,7 +27,10 @@ struct OCRView: UIViewControllerRepresentable {
     class Coordinator: NSObject, GFLiveScannerDelegate {
         func capturedStrings(strings: [String]) {
             print(strings)
-            parent.scannedText = strings.joined(separator: "\n")
+            guard let scannedText = strings.first,
+                  let number = parseNumber(text: scannedText) else { return }
+
+            parent.scannedText = "\(number)"
         }
 
         func liveCaptureEnded(withError: Error?) {
@@ -43,6 +46,17 @@ struct OCRView: UIViewControllerRepresentable {
 
         deinit {
             print("### deinit coordinator")
+        }
+
+        private func parseNumber(text: String) -> Int? {
+          let acceptedLetters = Array(0...9).map(String.init) + ["-"]
+
+          let characters = text
+            .replacingOccurrences(of: "\n", with: "")
+            .replacingOccurrences(of: "o", with: "0")
+            .filter({ acceptedLetters.contains(String($0)) })
+
+          return Int(String(characters))
         }
     }
 }
