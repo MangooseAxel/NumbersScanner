@@ -10,14 +10,14 @@ import UIKit
 import Vision
 
 /// Convenience typealias for the callback function passed to the OCR class
-public typealias GFOcrHelperCallback = (Result<[String], Error>) -> Void
+public typealias GFOcrHelperCallback = (Result<String, Error>) -> Void
 
 /// Helper struct for OCRHelper
 /// containing the CGImage to process and the callback to call
 /// once the OCR is done
 fileprivate struct GFOcrHelperRequest {
     var image: CGImage
-    var orientation: CGImagePropertyOrientation?
+    var orientation: CGImagePropertyOrientation
     var callback: GFOcrHelperCallback
 }
 
@@ -47,7 +47,7 @@ public class GFOcrHelper {
         if imageSize == CGSize() {
             imageSize = image.size
         }
-        addRequest(withImage: cgImage, orientation:nil, callback: callback)
+        addRequest(withImage: cgImage, orientation: .up, callback: callback)
     }
 
     /// Get an array of strings from a CGImage
@@ -58,13 +58,13 @@ public class GFOcrHelper {
     ///                 and an optional array of string recognized in the image
     public func getTextFromImage(
         _ image: CGImage,
-        orientation: CGImagePropertyOrientation?,
+        orientation: CGImagePropertyOrientation,
         callback: @escaping GFOcrHelperCallback
     ) {
         if imageSize == CGSize() {
             imageSize = .init(width: image.width, height: image.height)
         }
-        addRequest(withImage: image, orientation:orientation, callback: callback)
+        addRequest(withImage: image, orientation: orientation, callback: callback)
     }
     
     // MARK: - Private
@@ -82,7 +82,7 @@ public class GFOcrHelper {
     ///   - callback: callback with the recognized text
     private func addRequest(
         withImage image: CGImage,
-        orientation: CGImagePropertyOrientation?,
+        orientation: CGImagePropertyOrientation,
         callback: @escaping GFOcrHelperCallback
     ) {
         let request = GFOcrHelperRequest(image: image, orientation: orientation, callback: callback)
@@ -95,21 +95,16 @@ public class GFOcrHelper {
     /// Process the next request in queue
     /// - Parameter request: The OCRHelperRequest to process
     private func processOCRRequest(_ request: GFOcrHelperRequest) {
-        var requestHandler: VNImageRequestHandler
-
-        if let orientation = request.orientation {
-            requestHandler = VNImageRequestHandler(
-                cgImage: request.image,
-                orientation: orientation,
-                options: [:]
-            )
-        } else {
-            requestHandler = VNImageRequestHandler(cgImage: request.image)
-        }
+        let requestHandler = VNImageRequestHandler(
+            cgImage: request.image,
+            orientation: request.orientation,
+            options: [:]
+        )
 
         let visionRequest = VNRecognizeTextRequest(completionHandler: recognizeTextHandler)
 
         visionRequest.recognitionLevel = .accurate
+        visionRequest.usesLanguageCorrection = false
 
         do {
             try requestHandler.perform([visionRequest])
@@ -144,15 +139,13 @@ public class GFOcrHelper {
         }
             .sorted { $0.1 < $1.1 } // sort by distance
 //        print(recognizedStrings.map(\.0))
-        
-        // Return the closest recognized string or nil if no strings were recognized
-        let closestString = recognizedStrings.first?.0
-        currentRequestProcessed(strings: closestString != nil ? [closestString!] : nil)
+
+        currentRequestProcessed(strings: recognizedStrings.first?.0)
     }
     
     /// Called when the current request has been processed
     /// - Parameter strings: Optional array with recognized text
-    private func currentRequestProcessed(strings: [String]?) {
+    private func currentRequestProcessed(strings: String?) {
         guard let request = pendingOCRRequests.first else { return }
 
         pendingOCRRequests.removeFirst()

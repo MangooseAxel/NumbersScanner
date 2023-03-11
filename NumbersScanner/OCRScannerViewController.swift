@@ -154,8 +154,8 @@ extension OCRScannerViewController: AVCaptureVideoDataOutputSampleBufferDelegate
 
         ocrHelper.getTextFromImage(croppedImage, orientation: CGImagePropertyOrientation.right) { result in
             switch result {
-                case .success(let strings):
-                    self.delegate?.capturedStrings(strings:strings)
+                case .success(let string):
+                    self.delegate?.capturedString(string)
 //                    self.capturedStrings = strings
                 case .failure(let error):
 //                    print("error performing ocr \(error)")
@@ -173,12 +173,12 @@ public protocol GFLiveScannerDelegate {
     /// May contain OCR text or a list of barcodes
     /// - Parameter strings: The strings detected during live scan
 
-    func capturedStrings(strings:[String])
+    func capturedString(_ string: String)
 
     /// Called when the live captured ended
     /// May happen because an error occurred or because the
     /// view controller has been closed via the optional close button
     /// - Parameter withError: The optional error
 
-    func liveCaptureEnded(withError:Error?)
+    func liveCaptureEnded(withError: Error?)
 }

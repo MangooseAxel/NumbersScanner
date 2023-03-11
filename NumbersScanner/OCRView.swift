@@ -26,13 +26,12 @@ struct OCRView: UIViewControllerRepresentable {
     func updateUIViewController(_ uiViewController: OCRScannerViewController, context: Context) {}
 
     class Coordinator: NSObject, GFLiveScannerDelegate {
-        func capturedStrings(strings: [String]) {
-            print(strings)
+        func capturedString(_ string: String) {
+            print(string)
 
-            parent.scannedText = "\(strings)"
+            parent.scannedText = "\(string)"
 
-            guard let scannedText = strings.first,
-                  let number = parseNumber(text: scannedText) else { return }
+            guard let number = parseNumber(text: string) else { return }
 
             parent.scannedNumber = "\(number)"
         }
@@ -53,21 +52,21 @@ struct OCRView: UIViewControllerRepresentable {
         }
 
         private func parseNumber(text: String) -> Int? {
-          let acceptedLetters = Array(0...9).map(String.init) + ["-"]
+            let acceptedLetters = Array(0...9).map(String.init) + ["-"]
 
-          let characters = text
-            .replacingOccurrences(of: "\n", with: "")
-            .replacingOccurrences(of: "o", with: "0")
-            .replacingOccurrences(of: "|", with: "1")
-            .replacingOccurrences(of: "l", with: "1")
-            .replacingOccurrences(of: "L", with: "1")
-            .replacingOccurrences(of: "z", with: "2")
-            .replacingOccurrences(of: "Z", with: "2")
-            .replacingOccurrences(of: "s", with: "2")
-            .replacingOccurrences(of: "S", with: "2")
-            .filter({ acceptedLetters.contains(String($0)) })
+            let characters = text
+                .replacingOccurrences(of: "\n", with: "")
+                .replacingOccurrences(of: "o", with: "0")
+                .replacingOccurrences(of: "|", with: "1")
+                .replacingOccurrences(of: "l", with: "1")
+                .replacingOccurrences(of: "L", with: "1")
+                .replacingOccurrences(of: "z", with: "2")
+                .replacingOccurrences(of: "Z", with: "2")
+                .replacingOccurrences(of: "s", with: "2")
+                .replacingOccurrences(of: "S", with: "2")
+                .filter({ acceptedLetters.contains(String($0)) })
 
-          return Int(String(characters))
+            return Int(String(characters))
         }
     }
 }
