@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State var scannedText = ""
+    @State var scannedNumber = ""
     @State var scannerPresented = false
 
     var body: some View {
@@ -22,18 +23,36 @@ struct ContentView: View {
             Button("Start scanning", action: {
                 scannerPresented = true
             })
+//            NavigationLink("Start scanning", destination: {
+//                ZStack {
+//                    OCRView(scannedText: $scannedText)
+//
+//                    Text(scannedText)
+//                        .padding()
+//                }
+//            })
         }
         .sheet(isPresented: $scannerPresented, onDismiss: {
             scannerPresented = false
         }, content: {
             VStack {
-                OCRView(scannedText: $scannedText)
+                OCRView(scannedText: $scannedText, scannedNumber: $scannedNumber)
                     .frame(height: 200)
                     .padding()
 
                 Spacer()
 
-                Text(scannedText)
+                List {
+                    Section("Text", content: {
+                        Text(scannedText)
+                    })
+
+                    Section("Number", content: {
+                        Text(scannedNumber)
+                    })
+                }
+
+                Spacer()
             }
         })
     }

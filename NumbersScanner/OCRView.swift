@@ -11,6 +11,7 @@ import Combine
 struct OCRView: UIViewControllerRepresentable {
 
     @Binding var scannedText: String
+    @Binding var scannedNumber: String
 
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
@@ -27,10 +28,13 @@ struct OCRView: UIViewControllerRepresentable {
     class Coordinator: NSObject, GFLiveScannerDelegate {
         func capturedStrings(strings: [String]) {
             print(strings)
+
+            parent.scannedText = "\(strings)"
+
             guard let scannedText = strings.first,
                   let number = parseNumber(text: scannedText) else { return }
 
-            parent.scannedText = "\(number)"
+            parent.scannedNumber = "\(number)"
         }
 
         func liveCaptureEnded(withError: Error?) {
@@ -54,6 +58,13 @@ struct OCRView: UIViewControllerRepresentable {
           let characters = text
             .replacingOccurrences(of: "\n", with: "")
             .replacingOccurrences(of: "o", with: "0")
+            .replacingOccurrences(of: "|", with: "1")
+            .replacingOccurrences(of: "l", with: "1")
+            .replacingOccurrences(of: "L", with: "1")
+            .replacingOccurrences(of: "z", with: "2")
+            .replacingOccurrences(of: "Z", with: "2")
+            .replacingOccurrences(of: "s", with: "2")
+            .replacingOccurrences(of: "S", with: "2")
             .filter({ acceptedLetters.contains(String($0)) })
 
           return Int(String(characters))

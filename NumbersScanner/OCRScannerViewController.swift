@@ -136,11 +136,7 @@ class OCRScannerViewController: UIViewController {
     }
 
     var rectOfInterest: CGRect {
-        let width = previewLayer.bounds.width
-        let height = previewLayer.bounds.height
-        let cropRect = CGRect(x: width * 0.25, y: height * 0.25, width: width * 0.5, height: height * 0.5)
-
-        return previewLayer.metadataOutputRectConverted(fromLayerRect: cropRect)
+        previewLayer.metadataOutputRectConverted(fromLayerRect: previewLayer.bounds)
     }
 }
 
@@ -156,13 +152,14 @@ extension OCRScannerViewController: AVCaptureVideoDataOutputSampleBufferDelegate
             return
         }
 
-        ocrHelper.getTextFromImage(croppedImage, orientation: CGImagePropertyOrientation.up) { result in
+        ocrHelper.getTextFromImage(croppedImage, orientation: CGImagePropertyOrientation.right) { result in
             switch result {
                 case .success(let strings):
                     self.delegate?.capturedStrings(strings:strings)
 //                    self.capturedStrings = strings
                 case .failure(let error):
-                    print("error performing ocr \(error)")
+//                    print("error performing ocr \(error)")
+                    break
             }
         }
     }

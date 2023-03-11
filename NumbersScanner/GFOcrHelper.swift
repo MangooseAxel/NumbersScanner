@@ -143,6 +143,7 @@ public class GFOcrHelper {
             return (candidate.string, CGFloat(distance))
         }
             .sorted { $0.1 < $1.1 } // sort by distance
+//        print(recognizedStrings.map(\.0))
         
         // Return the closest recognized string or nil if no strings were recognized
         let closestString = recognizedStrings.first?.0
