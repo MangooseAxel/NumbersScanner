@@ -16,6 +16,7 @@
 		FA75640529B688A100B5C947 /* OCRScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA75640429B688A100B5C947 /* OCRScannerViewController.swift */; };
 		FA75640929B68AB800B5C947 /* GFLiveScannerUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA75640829B68AB800B5C947 /* GFLiveScannerUtils.swift */; };
 		FA75640B29B68AD600B5C947 /* GFOcrHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA75640A29B68AD600B5C947 /* GFOcrHelper.swift */; };
+		FAC4D6D229BBA7A00043D753 /* CGPointExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC4D6D129BBA7A00043D753 /* CGPointExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		FA75640429B688A100B5C947 /* OCRScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRScannerViewController.swift; sourceTree = "<group>"; };
 		FA75640829B68AB800B5C947 /* GFLiveScannerUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GFLiveScannerUtils.swift; sourceTree = "<group>"; };
 		FA75640A29B68AD600B5C947 /* GFOcrHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GFOcrHelper.swift; sourceTree = "<group>"; };
+		FAC4D6D129BBA7A00043D753 /* CGPointExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGPointExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +74,7 @@
 				FA75640429B688A100B5C947 /* OCRScannerViewController.swift */,
 				FA75640A29B68AD600B5C947 /* GFOcrHelper.swift */,
 				FA1552C929B927E70038985B /* CGImageExtension.swift */,
+				FAC4D6D129BBA7A00043D753 /* CGPointExtension.swift */,
 			);
 			path = NumbersScanner;
 			sourceTree = "<group>";
@@ -156,6 +159,7 @@
 			files = (
 				FA7563CD29B6625200B5C947 /* ContentView.swift in Sources */,
 				FA7563CB29B6625200B5C947 /* NumbersScannerApp.swift in Sources */,
+				FAC4D6D229BBA7A00043D753 /* CGPointExtension.swift in Sources */,
 				FA1552CA29B927E70038985B /* CGImageExtension.swift in Sources */,
 				FA75640929B68AB800B5C947 /* GFLiveScannerUtils.swift in Sources */,
 				FA75640B29B68AD600B5C947 /* GFOcrHelper.swift in Sources */,
@@ -294,11 +298,13 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NumbersScanner/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "perform OCR";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "save scanned photo";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -325,11 +331,13 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NumbersScanner/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "perform OCR";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "save scanned photo";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

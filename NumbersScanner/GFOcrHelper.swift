@@ -129,20 +129,18 @@ public class GFOcrHelper {
             return
         }
 
-        // Get the center of the image
-        let centerX = imageSize.width / 2
-        let centerY = imageSize.height / 2
-
         // Sort the recognized strings based on their distance from the center of the image
         let recognizedStrings = observations.compactMap { observation -> (String, CGFloat)? in
             guard let candidate = observation.topCandidates(1).first else { return nil }
 
             let boundingBox = observation.boundingBox
-            let boundingBoxCenterX = boundingBox.origin.x + (boundingBox.size.width / 2)
-            let boundingBoxCenterY = boundingBox.origin.y + (boundingBox.size.height / 2)
-            let distance = sqrt(pow((centerX - boundingBoxCenterX), 2) + pow((centerY - boundingBoxCenterY), 2))
+            let boundingBoxCenter = CGPoint(
+                x: boundingBox.origin.x + (boundingBox.width / 2),
+                y: boundingBox.origin.y + (boundingBox.height / 2)
+            )
+            let distance = boundingBoxCenter.distanceTo(point: CGPoint(x: 0.5, y: 0.5))
 
-            return (candidate.string, distance)
+            return (candidate.string, CGFloat(distance))
         }
             .sorted { $0.1 < $1.1 } // sort by distance
         
