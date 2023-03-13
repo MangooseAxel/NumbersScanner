@@ -21,7 +21,7 @@ class ContentViewModel: ObservableObject {
 struct ContentView: View {
     @State var scannedText = ""
     @State var scannedNumber: Int?
-    @State var scannerPresented = true
+    @State var scannerPresented = false
     @StateObject var viewModel = ContentViewModel()
 
     var body: some View {

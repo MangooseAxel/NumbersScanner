@@ -11,11 +11,13 @@ struct ScannerSheetView: View {
     @Binding var scannedText: String
     @Binding var scannedNumber: Int?
     @ObservedObject var viewModel: ContentViewModel
+    @State private var scrollTarget: String
 
     init(scannedText: Binding<String>, scannedNumber: Binding<Int?>, viewModel: ContentViewModel) {
         self._scannedText = scannedText
         self._scannedNumber = scannedNumber
         self.viewModel = viewModel
+        self._scrollTarget = State(initialValue: "\(viewModel.selectedCell.row) \(viewModel.selectedCell.column)")
 
         UITableView.appearance().isScrollEnabled = false
     }
@@ -50,25 +52,38 @@ struct ScannerSheetView: View {
             .padding()
 
             scannerViewScannedValuesSectionView
-            .toolbar(content: scannerViewToolbar)
+                .toolbar(content: scannerViewToolbar)
+
+            Spacer()
         }
     }
 
     var scannerViewScannedValuesSectionView: some View {
         GroupBox("Scanned values") {
-            ScrollView([.vertical, .horizontal]) {
-                Grid {
-                    ForEach(viewModel.values.indices, id: \.self) { row in
-                        GridRow {
-                            ForEach(viewModel.values[row].indices, id: \.self) { column in
-                                valueCellView(row, column)
+            ScrollViewReader { scrollProxy in
+                ScrollView([.vertical, .horizontal]) {
+                    Grid {
+                        ForEach(viewModel.values.indices, id: \.self) { row in
+                            GridRow {
+                                ForEach(viewModel.values[row].indices, id: \.self) { column in
+                                    valueCellView(row, column)
+                                }
                             }
                         }
                     }
                 }
+                .onChange(of: scrollTarget) { _ in
+                    withAnimation {
+                        scrollProxy.scrollTo(scrollTarget, anchor: .center)
+                    }
+                }
+                .onAppear {
+                    scrollProxy.scrollTo(scrollTarget, anchor: .center)
+                }
             }
-            .frame(height: 280, alignment: .topLeading)
         }
+        .frame(maxHeight: 350, alignment: .topLeading)
+        .fixedSize(horizontal: false, vertical: true)
         .clipShape(RoundedRectangle(cornerRadius: 15))
         .padding()
     }
@@ -86,6 +101,7 @@ struct ScannerSheetView: View {
                 .contentShape(Rectangle())
         })
         .buttonStyle(.plain)
+        .id("\(row) \(column)")
     }
 
     func isCellSelected(_ row: Int, _ column: Int) -> Bool {
@@ -97,6 +113,12 @@ struct ScannerSheetView: View {
             Button(action: {
                 let selectedCell = viewModel.selectedCell
                 viewModel.values[selectedCell.row][selectedCell.column] = scannedNumber
+
+                let newColumn = (selectedCell.column + 1) % (viewModel.values.first?.count ?? 1)
+                let newRow = (selectedCell.row + (newColumn == 0 ? 1 : 0)) % viewModel.values.count
+
+                viewModel.selectedCell = (newRow, newColumn)
+                scrollTarget = "\(newRow) \(newColumn)"
             }, label: {
                 Text("Insert")
                     .padding(.horizontal, 50)
