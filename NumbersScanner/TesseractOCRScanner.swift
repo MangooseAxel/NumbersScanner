@@ -6,9 +6,9 @@
 //
 
 
-import UIKit
-import TesseractOCR
-
+//import UIKit
+//import TesseractOCR
+//
 //class TesseractOCRScanner: OCRScanner {
 //    func requestOCR(with sourceImage: UIImage, completed: @escaping ([OCRResult]?) -> Void) {
 //        guard let tesseract = G8Tesseract(language: "kor+eng") else {

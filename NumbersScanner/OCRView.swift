@@ -11,7 +11,7 @@ import Combine
 struct OCRView: UIViewControllerRepresentable {
 
     @Binding var scannedText: String
-    @Binding var scannedNumber: String
+    @Binding var scannedNumber: Int?
 
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
@@ -33,7 +33,7 @@ struct OCRView: UIViewControllerRepresentable {
 
             guard let number = parseNumber(text: string) else { return }
 
-            parent.scannedNumber = "\(number)"
+            parent.scannedNumber = number
         }
 
         func liveCaptureEnded(withError: Error?) {

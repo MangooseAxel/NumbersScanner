@@ -7,10 +7,22 @@
 
 import SwiftUI
 
+class ContentViewModel: ObservableObject {
+    @Published var rowsCount: Int = 4
+    @Published var columnsCount: Int = 4
+    @Published var selectedCell: (row: Int, column: Int) = (row: 0, column: 0)
+    @Published var values: [[Int?]]
+
+    init() {
+        self.values = Array(repeating: Array(repeating: nil, count: 10), count: 10)
+    }
+}
+
 struct ContentView: View {
     @State var scannedText = ""
-    @State var scannedNumber = ""
-    @State var scannerPresented = false
+    @State var scannedNumber: Int?
+    @State var scannerPresented = true
+    @StateObject var viewModel = ContentViewModel()
 
     var body: some View {
         VStack {
@@ -32,29 +44,15 @@ struct ContentView: View {
 //                }
 //            })
         }
-        .sheet(isPresented: $scannerPresented, onDismiss: {
-            scannerPresented = false
-        }, content: {
-            VStack {
-                OCRView(scannedText: $scannedText, scannedNumber: $scannedNumber)
-                    .frame(height: 200)
-                    .padding()
+        .sheet(isPresented: $scannerPresented, content: scannerSheetView)
+    }
 
-                Spacer()
-
-                List {
-                    Section("Text", content: {
-                        Text(scannedText)
-                    })
-
-                    Section("Number", content: {
-                        Text(scannedNumber)
-                    })
-                }
-
-                Spacer()
-            }
-        })
+    func scannerSheetView() -> ScannerSheetView {
+        ScannerSheetView(
+            scannedText: $scannedText,
+            scannedNumber: $scannedNumber,
+            viewModel: viewModel
+        )
     }
 }
 

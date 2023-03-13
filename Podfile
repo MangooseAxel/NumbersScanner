@@ -6,6 +6,6 @@ target 'NumbersScanner' do
   use_frameworks!
 
   # Pods for NumbersScanner
-  pod 'TesseractOCRiOS'
+#  pod 'TesseractOCRiOS'
 
 end
