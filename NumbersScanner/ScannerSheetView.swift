@@ -121,8 +121,10 @@ struct ScannerSheetView: View {
                 viewModel.selectedCell = (newRow, newColumn)
                 scrollTarget = "\(newRow) \(newColumn)"
             }, label: {
-                Text("Insert")
-                    .padding(.horizontal, 50)
+                Label("Insert", systemImage: "plus.viewfinder")
+                    .labelStyle(.titleAndIcon)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 5)
             })
             .buttonStyle(.borderedProminent)
             .tint(.green)
@@ -132,10 +134,15 @@ struct ScannerSheetView: View {
 
 struct ScannerSheetView_Previews: PreviewProvider {
     static var previews: some View {
-        ScannerSheetView(
-            scannedText: .constant(""),
-            scannedNumber: .constant(nil),
-            viewModel: .init()
-        )
+        ForEach(ColorScheme.allCases, id: \.self, content: { colorScheme in
+            NavigationStack {
+                ScannerSheetView(
+                    scannedText: .constant(""),
+                    scannedNumber: .constant(nil),
+                    viewModel: .init()
+                )
+            }
+            .preferredColorScheme(colorScheme)
+        })
     }
 }

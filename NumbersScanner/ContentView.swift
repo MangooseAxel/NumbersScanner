@@ -27,13 +27,6 @@ struct ContentView: View {
 
     var body: some View {
         VStack {
-            Text("Scanned text")
-                .padding()
-
-            Button("Start scanning", action: {
-                focusedValue = nil
-                scannerPresented = true
-            })
 //            NavigationLink("Start scanning", destination: {
 //                ZStack {
 //                    OCRView(scannedText: $scannedText)
@@ -47,6 +40,22 @@ struct ContentView: View {
         .sheet(isPresented: $scannerPresented, content: scannerSheetView)
         .contentShape(Rectangle())
         .onTapGesture(perform: hideKeyboard)
+        .toolbar(content: toolbarView)
+    }
+
+    func toolbarView() -> some ToolbarContent {
+        ToolbarItem(placement: .bottomBar, content: {
+            Button(action: {
+                focusedValue = nil
+                scannerPresented = true
+            }, label: {
+                Label("Scan", systemImage: "qrcode.viewfinder")
+                    .labelStyle(.titleAndIcon)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 5)
+            })
+            .buttonStyle(.borderedProminent)
+        })
     }
 
     var scannerViewScannedValuesSectionView: some View {
@@ -105,10 +114,12 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
-            .preferredColorScheme(.dark)
+        ForEach(ColorScheme.allCases, id: \.self, content: { colorScheme in
+            NavigationStack {
+                ContentView()
+                    .preferredColorScheme(colorScheme)
 
-        ContentView()
-            .preferredColorScheme(.light)
+            }
+        })
     }
 }
