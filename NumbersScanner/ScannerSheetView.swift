@@ -93,9 +93,10 @@ struct ScannerSheetView: View {
             viewModel.selectedCell = (row, column)
         }, label: {
             Text(viewModel.values[row][column]?.formatted() ?? "")
-                .frame(width: 50, height: 50)
+                .frame(minWidth: 30, maxWidth: .infinity, minHeight: 50)
+                .scenePadding(.minimum, edges: .horizontal)
                 .border(
-                    isCellSelected(row, column) ? .blue : .black,
+                    isCellSelected(row, column) ? Color.accentColor : .secondary,
                     width: isCellSelected(row, column) ? 2 : 1
                 )
                 .contentShape(Rectangle())
