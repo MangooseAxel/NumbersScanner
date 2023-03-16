@@ -7,17 +7,21 @@
 
 import SwiftUI
 
+struct FocusedCell: Hashable {
+    let row: Int
+    let column: Int
+}
+
 struct ScannerSheetView: View {
     @Binding var scannedText: String
     @Binding var scannedNumber: Int?
     @ObservedObject var viewModel: ContentViewModel
-    @State private var scrollTarget: String
+    @State private var selectedCell: FocusedCell = .init(row: 0, column: 0)
 
     init(scannedText: Binding<String>, scannedNumber: Binding<Int?>, viewModel: ContentViewModel) {
         self._scannedText = scannedText
         self._scannedNumber = scannedNumber
         self.viewModel = viewModel
-        self._scrollTarget = State(initialValue: "\(viewModel.selectedCell.row) \(viewModel.selectedCell.column)")
 
         UITableView.appearance().isScrollEnabled = false
     }
@@ -46,20 +50,23 @@ struct ScannerSheetView: View {
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                .frame(height: 200)
+                .frame(height: 170)
             }
             .clipShape(RoundedRectangle(cornerRadius: 15))
-            .padding()
+
+            TableManipulatorView(viewModel: viewModel)
+                .padding(.horizontal)
 
             scannerViewScannedValuesSectionView
                 .toolbar(content: scannerViewToolbar)
 
             Spacer()
         }
+        .padding()
     }
 
     var scannerViewScannedValuesSectionView: some View {
-        GroupBox("Scanned values") {
+        GroupBox(content: {
             ScrollViewReader { scrollProxy in
                 ScrollView([.vertical, .horizontal]) {
                     Grid {
@@ -72,25 +79,24 @@ struct ScannerSheetView: View {
                         }
                     }
                 }
-                .onChange(of: scrollTarget) { _ in
+                .onChange(of: selectedCell) { _ in
                     withAnimation {
-                        scrollProxy.scrollTo(scrollTarget, anchor: .center)
+                        scrollProxy.scrollTo(selectedCell, anchor: .center)
                     }
                 }
                 .onAppear {
-                    scrollProxy.scrollTo(scrollTarget, anchor: .center)
+                    scrollProxy.scrollTo(selectedCell, anchor: .center)
                 }
             }
-        }
-        .frame(maxHeight: 350, alignment: .topLeading)
+        })
+        .frame(maxHeight: 340, alignment: .topLeading)
         .fixedSize(horizontal: false, vertical: true)
         .clipShape(RoundedRectangle(cornerRadius: 15))
-        .padding()
     }
 
     func valueCellView(_ row: Int, _ column: Int) -> some View {
         Button(action: {
-            viewModel.selectedCell = (row, column)
+            selectedCell = .init(row: row, column: column)
         }, label: {
             Text(viewModel.values[row][column]?.formatted() ?? "")
                 .frame(minWidth: 30, maxWidth: .infinity, minHeight: 50)
@@ -102,24 +108,22 @@ struct ScannerSheetView: View {
                 .contentShape(Rectangle())
         })
         .buttonStyle(.plain)
-        .id("\(row) \(column)")
+        .id(FocusedCell(row: row, column: column))
     }
 
     func isCellSelected(_ row: Int, _ column: Int) -> Bool {
-        viewModel.selectedCell == (row, column)
+        selectedCell == .init(row: row, column: column)
     }
 
     func scannerViewToolbar() -> some ToolbarContent {
         ToolbarItem(placement: .bottomBar, content: {
             Button(action: {
-                let selectedCell = viewModel.selectedCell
                 viewModel.values[selectedCell.row][selectedCell.column] = scannedNumber
 
                 let newColumn = (selectedCell.column + 1) % (viewModel.values.first?.count ?? 1)
                 let newRow = (selectedCell.row + (newColumn == 0 ? 1 : 0)) % viewModel.values.count
 
-                viewModel.selectedCell = (newRow, newColumn)
-                scrollTarget = "\(newRow) \(newColumn)"
+                selectedCell = .init(row: newRow, column: newColumn)
             }, label: {
                 Label("Insert", systemImage: "plus.viewfinder")
                     .labelStyle(.titleAndIcon)

@@ -7,46 +7,30 @@
 
 import SwiftUI
 
-class ContentViewModel: ObservableObject {
-    @Published var rowsCount: Int = 4
-    @Published var columnsCount: Int = 4
-    @Published var selectedCell: (row: Int, column: Int) = (row: 0, column: 0)
-    @Published var values: [[Int?]]
-
-    init() {
-        self.values = Array(repeating: Array(repeating: nil, count: 10), count: 10)
-    }
-}
-
 struct ContentView: View {
     @State var scannedText = ""
     @State var scannedNumber: Int?
     @State var scannerPresented = false
     @StateObject var viewModel = ContentViewModel()
-    @FocusState var focusedValue: String?
+    @FocusState var focusedCell: FocusedCell?
 
     var body: some View {
         VStack {
-//            NavigationLink("Start scanning", destination: {
-//                ZStack {
-//                    OCRView(scannedText: $scannedText)
-//
-//                    Text(scannedText)
-//                        .padding()
-//                }
-//            })
+            TableManipulatorView(viewModel: viewModel)
+            Spacer()
             scannerViewScannedValuesSectionView
+            Spacer()
         }
         .sheet(isPresented: $scannerPresented, content: scannerSheetView)
-        .contentShape(Rectangle())
-        .onTapGesture(perform: hideKeyboard)
+        .padding()
         .toolbar(content: toolbarView)
+        .navigationTitle("Number Scanner")
     }
 
     func toolbarView() -> some ToolbarContent {
         ToolbarItem(placement: .bottomBar, content: {
             Button(action: {
-                focusedValue = nil
+                focusedCell = nil
                 scannerPresented = true
             }, label: {
                 Label("Scan", systemImage: "qrcode.viewfinder")
@@ -80,7 +64,6 @@ struct ContentView: View {
         .frame(maxHeight: 350, alignment: .topLeading)
         .fixedSize(horizontal: false, vertical: true)
         .clipShape(RoundedRectangle(cornerRadius: 15))
-        .padding()
     }
 
     func valueCellView(_ row: Int, _ column: Int) -> some View {
@@ -89,7 +72,7 @@ struct ContentView: View {
             .keyboardType(.numbersAndPunctuation)
             .frame(minWidth: 30, minHeight: 50)
             .scenePadding(.minimum, edges: .horizontal)
-            .focused($focusedValue, equals: "\(row) \(column)")
+            .focused($focusedCell, equals: FocusedCell(row: row, column: column))
             .border(
                 isCellSelected(row, column) ? Color.accentColor : .secondary,
                 width: isCellSelected(row, column) ? 2 : 1
@@ -100,7 +83,7 @@ struct ContentView: View {
     }
 
     func isCellSelected(_ row: Int, _ column: Int) -> Bool {
-        focusedValue == "\(row) \(column)"
+        focusedCell == FocusedCell(row: row, column: column)
     }
 
     func scannerSheetView() -> ScannerSheetView {
