@@ -10,6 +10,7 @@
 		FA1552CA29B927E70038985B /* CGImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1552C929B927E70038985B /* CGImageExtension.swift */; };
 		FA1DC51A29C2347B00BF0DAD /* ViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1DC51929C2347B00BF0DAD /* ViewExtension.swift */; };
 		FA3950B629BE714F009A5A85 /* ScannerSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3950B529BE714F009A5A85 /* ScannerSheetView.swift */; };
+		FA5C637229CB389D00158C21 /* ShareSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5C637129CB389D00158C21 /* ShareSheetView.swift */; };
 		FA7563CB29B6625200B5C947 /* NumbersScannerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7563CA29B6625200B5C947 /* NumbersScannerApp.swift */; };
 		FA7563CD29B6625200B5C947 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7563CC29B6625200B5C947 /* ContentView.swift */; };
 		FA7563CF29B6625300B5C947 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA7563CE29B6625300B5C947 /* Assets.xcassets */; };
@@ -28,6 +29,7 @@
 		FA1552C929B927E70038985B /* CGImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGImageExtension.swift; sourceTree = "<group>"; };
 		FA1DC51929C2347B00BF0DAD /* ViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtension.swift; sourceTree = "<group>"; };
 		FA3950B529BE714F009A5A85 /* ScannerSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerSheetView.swift; sourceTree = "<group>"; };
+		FA5C637129CB389D00158C21 /* ShareSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSheetView.swift; sourceTree = "<group>"; };
 		FA7563C729B6625200B5C947 /* NumbersScanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NumbersScanner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA7563CA29B6625200B5C947 /* NumbersScannerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumbersScannerApp.swift; sourceTree = "<group>"; };
 		FA7563CC29B6625200B5C947 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -90,6 +92,7 @@
 				FA1DC51929C2347B00BF0DAD /* ViewExtension.swift */,
 				FAAB83D229C36117008E1235 /* TableManipulatorView.swift */,
 				FAAB83D429C362CC008E1235 /* ContentViewModel.swift */,
+				FA5C637129CB389D00158C21 /* ShareSheetView.swift */,
 			);
 			path = NumbersScanner;
 			sourceTree = "<group>";
@@ -178,6 +181,7 @@
 				FA7563CB29B6625200B5C947 /* NumbersScannerApp.swift in Sources */,
 				FAC4D6D229BBA7A00043D753 /* CGPointExtension.swift in Sources */,
 				FA1552CA29B927E70038985B /* CGImageExtension.swift in Sources */,
+				FA5C637229CB389D00158C21 /* ShareSheetView.swift in Sources */,
 				FA75640929B68AB800B5C947 /* GFLiveScannerUtils.swift in Sources */,
 				FA3950B629BE714F009A5A85 /* ScannerSheetView.swift in Sources */,
 				FA1DC51A29C2347B00BF0DAD /* ViewExtension.swift in Sources */,

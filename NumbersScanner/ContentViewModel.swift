@@ -34,9 +34,41 @@ class ContentViewModel: ObservableObject {
     }
     @Published var values: [[Double?]]
 
+    let tempFileURL: URL
+
     init(rowsCount: Int = 4, columnsCount: Int = 4) {
         self.rowsCount = rowsCount
         self.columnsCount = columnsCount
         self.values = Array(repeating: Array(repeating: nil, count: columnsCount), count: rowsCount)
+
+        let tempDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
+        tempFileURL = tempDirectoryURL.appendingPathComponent(UUID().uuidString).appendingPathExtension("csv")
+    }
+
+    func isCSVAvailable() -> Bool {
+        do {
+            let tmpValues = [Array(repeating: 0.0, count: values.first?.count ?? 1)] + values
+
+            let csvBodyString = tmpValues.map({ row in
+                row.enumerated().map({ index, value in
+                    if row == tmpValues.first {
+                        return index == 0 ? "x" : "y\(index)"
+                    } else {
+                        if let value {
+                            return "\(value)"
+                        } else {
+                            return ""
+                        }
+                    }
+                }).joined(separator: ",")
+            }).joined(separator: "\n")
+
+            try String(csvBodyString).write(to: tempFileURL, atomically: true, encoding: .utf8)
+
+            return true
+        } catch {
+            print(error)
+            return false
+        }
     }
 }

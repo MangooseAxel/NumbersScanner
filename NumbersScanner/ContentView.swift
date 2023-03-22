@@ -11,8 +11,31 @@ struct ContentView: View {
     @State var scannedText = ""
     @State var scannedNumber: Double?
     @State var scannerPresented = false
+    @State private var isShareSheetPresented = false
     @StateObject var viewModel = ContentViewModel()
     @FocusState var focusedCell: FocusedCell?
+
+    func createCSV(from recArray:[Dictionary<String, AnyObject>]) {
+        var csvString = "\("Employee ID"),\("Employee Name")\n\n"
+        for dct in recArray {
+            csvString = csvString.appending("\(String(describing: dct["EmpID"]!)) ,\(String(describing: dct["EmpName"]!))\n")
+        }
+
+        let fileManager = FileManager.default
+        do {
+            let path = try fileManager.url(
+                for: .documentDirectory,
+                in: .allDomainsMask,
+                appropriateFor: nil,
+                create: false
+            )
+            let fileURL = path.appendingPathComponent("CSVRec.csv")
+            try csvString.write(to: fileURL, atomically: true, encoding: .utf8)
+        } catch {
+            print("error creating file")
+        }
+
+    }
 
     var body: some View {
         VStack {
@@ -25,8 +48,13 @@ struct ContentView: View {
         .padding()
         .toolbar(content: toolbarView)
         .navigationTitle("Number Scanner")
+        .sheet(isPresented: $isShareSheetPresented) {
+            ShareSheetView(activityItems: [viewModel.tempFileURL])
+                .presentationDetents([.medium])
+        }
     }
 
+    @ToolbarContentBuilder
     func toolbarView() -> some ToolbarContent {
         ToolbarItem(placement: .bottomBar, content: {
             Button(action: {
@@ -39,6 +67,15 @@ struct ContentView: View {
                     .padding(.vertical, 5)
             })
             .buttonStyle(.borderedProminent)
+        })
+
+        ToolbarItem(placement: .navigationBarTrailing, content: {
+            Button(action: {
+                guard viewModel.isCSVAvailable() else { return }
+                self.isShareSheetPresented.toggle()
+            }, label: {
+                Image(systemName: "square.and.arrow.up")
+            })
         })
     }
 
