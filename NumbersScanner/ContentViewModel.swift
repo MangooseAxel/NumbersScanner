@@ -32,7 +32,7 @@ class ContentViewModel: ObservableObject {
             }
         }
     }
-    @Published var values: [[Int?]]
+    @Published var values: [[Double?]]
 
     init(rowsCount: Int = 4, columnsCount: Int = 4) {
         self.rowsCount = rowsCount

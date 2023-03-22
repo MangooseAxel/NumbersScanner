@@ -14,11 +14,11 @@ struct FocusedCell: Hashable {
 
 struct ScannerSheetView: View {
     @Binding var scannedText: String
-    @Binding var scannedNumber: Int?
+    @Binding var scannedNumber: Double?
     @ObservedObject var viewModel: ContentViewModel
     @State private var selectedCell: FocusedCell = .init(row: 0, column: 0)
 
-    init(scannedText: Binding<String>, scannedNumber: Binding<Int?>, viewModel: ContentViewModel) {
+    init(scannedText: Binding<String>, scannedNumber: Binding<Double?>, viewModel: ContentViewModel) {
         self._scannedText = scannedText
         self._scannedNumber = scannedNumber
         self.viewModel = viewModel

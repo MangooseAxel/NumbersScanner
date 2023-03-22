@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State var scannedText = ""
-    @State var scannedNumber: Int?
+    @State var scannedNumber: Double?
     @State var scannerPresented = false
     @StateObject var viewModel = ContentViewModel()
     @FocusState var focusedCell: FocusedCell?
