@@ -54,7 +54,7 @@ struct OCRView: UIViewControllerRepresentable {
         private func parseNumber(text: String) -> Double? {
             let acceptedLetters = Array(0...9).map(String.init) + ["-"] + [","] + ["."]
 
-            var characters = text
+            let characters = text
                 .replacingOccurrences(of: ",", with: ".")
                 .replacingOccurrences(of: "\n", with: "")
                 .replacingOccurrences(of: "o", with: "0")
