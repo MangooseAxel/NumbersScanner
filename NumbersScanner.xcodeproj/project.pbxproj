@@ -22,6 +22,7 @@
 		FAA978D729BCE84C00965823 /* TesseractOCRScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA978D629BCE84C00965823 /* TesseractOCRScanner.swift */; };
 		FAAB83D329C36117008E1235 /* TableManipulatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAB83D229C36117008E1235 /* TableManipulatorView.swift */; };
 		FAAB83D529C362CC008E1235 /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAB83D429C362CC008E1235 /* ContentViewModel.swift */; };
+		FAC43E6629DB3B2E005DF0FB /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC43E6529DB3B2E005DF0FB /* ChartView.swift */; };
 		FAC4D6D229BBA7A00043D753 /* CGPointExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC4D6D129BBA7A00043D753 /* CGPointExtension.swift */; };
 /* End PBXBuildFile section */
 
@@ -43,6 +44,7 @@
 		FAA978D629BCE84C00965823 /* TesseractOCRScanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TesseractOCRScanner.swift; sourceTree = "<group>"; };
 		FAAB83D229C36117008E1235 /* TableManipulatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableManipulatorView.swift; sourceTree = "<group>"; };
 		FAAB83D429C362CC008E1235 /* ContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewModel.swift; sourceTree = "<group>"; };
+		FAC43E6529DB3B2E005DF0FB /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
 		FAC4D6D129BBA7A00043D753 /* CGPointExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGPointExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -93,6 +95,7 @@
 				FAAB83D229C36117008E1235 /* TableManipulatorView.swift */,
 				FAAB83D429C362CC008E1235 /* ContentViewModel.swift */,
 				FA5C637129CB389D00158C21 /* ShareSheetView.swift */,
+				FAC43E6529DB3B2E005DF0FB /* ChartView.swift */,
 			);
 			path = NumbersScanner;
 			sourceTree = "<group>";
@@ -183,6 +186,7 @@
 				FA1552CA29B927E70038985B /* CGImageExtension.swift in Sources */,
 				FA5C637229CB389D00158C21 /* ShareSheetView.swift in Sources */,
 				FA75640929B68AB800B5C947 /* GFLiveScannerUtils.swift in Sources */,
+				FAC43E6629DB3B2E005DF0FB /* ChartView.swift in Sources */,
 				FA3950B629BE714F009A5A85 /* ScannerSheetView.swift in Sources */,
 				FA1DC51A29C2347B00BF0DAD /* ViewExtension.swift in Sources */,
 				FA75640B29B68AD600B5C947 /* GFOcrHelper.swift in Sources */,

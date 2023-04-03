@@ -19,6 +19,20 @@ struct ContentView: View {
         VStack {
             TableManipulatorView(viewModel: viewModel)
             Spacer()
+
+            NavigationLink(
+                destination: ChartView(data: viewModel.values) {
+                    scannerViewScannedValuesSectionView
+                },
+                label: {
+                    Label("Chart", systemImage: "chart.xyaxis.line")
+                        .padding(.horizontal, 10)
+                }
+            )
+            .buttonStyle(.borderedProminent)
+
+            Spacer()
+
             scannerViewScannedValuesSectionView
             Spacer()
         }

@@ -39,7 +39,7 @@ class ContentViewModel: ObservableObject {
     init(rowsCount: Int = 4, columnsCount: Int = 4) {
         self.rowsCount = rowsCount
         self.columnsCount = columnsCount
-        self.values = Array(repeating: Array(repeating: nil, count: columnsCount), count: rowsCount)
+        self.values = [[0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3]]
 
         let tempDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
         tempFileURL = tempDirectoryURL.appendingPathComponent(UUID().uuidString).appendingPathExtension("csv")
