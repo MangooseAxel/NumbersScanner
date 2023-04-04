@@ -99,6 +99,7 @@ struct ContentView: View {
         TextField(value: $viewModel.values[row][column], format: .number, label: {})
             .multilineTextAlignment(.center)
             .keyboardType(.numbersAndPunctuation)
+            .autocorrectionDisabled()
             .frame(minWidth: 30, minHeight: 50)
             .scenePadding(.minimum, edges: .horizontal)
             .focused($focusedCell, equals: FocusedCell(row: row, column: column))
