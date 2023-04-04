@@ -39,7 +39,8 @@ struct ContentView: View {
         .sheet(isPresented: $isScannerSheetPresented, content: scannerSheetView)
         .padding()
         .toolbar(content: toolbarView)
-        .navigationTitle("Number Scanner")
+        .navigationTitle("Main")
+        .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $isShareSheetPresented) {
             ShareSheetView(activityItems: [viewModel.tempFileURL])
                 .presentationDetents([.medium])
@@ -116,12 +117,17 @@ struct ContentView: View {
         focusedCell == FocusedCell(row: row, column: column)
     }
 
-    func scannerSheetView() -> ScannerSheetView {
-        ScannerSheetView(
-            scannedText: $scannedText,
-            scannedNumber: $scannedNumber,
-            viewModel: viewModel
-        )
+    func scannerSheetView() -> some View {
+        NavigationView {
+            ScannerSheetView(
+                scannedText: $scannedText,
+                scannedNumber: $scannedNumber,
+                viewModel: viewModel
+            )
+            .edgesIgnoringSafeArea(.vertical)
+            .navigationTitle("Scanner")
+            .navigationBarTitleDisplayMode(.inline)
+        }
     }
 }
 

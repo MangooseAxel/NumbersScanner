@@ -20,6 +20,7 @@ struct OCRView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> OCRScannerViewController {
         let viewController = OCRScannerViewController()
         viewController.delegate = context.coordinator
+        viewController.navigationItem.title = "Scanner"
         return viewController
     }
 

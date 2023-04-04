@@ -53,6 +53,7 @@ struct ChartView<Content: View>: View {
             content.padding()
         }
         .navigationTitle("Chart")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
