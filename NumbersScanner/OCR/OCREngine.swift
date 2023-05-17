@@ -37,7 +37,7 @@ public class OCREngine {
         _ image: CGImage,
         callback: @escaping OCREngineCallback
     ) {
-        if imageSize == CGSize() {
+        if imageSize == .zero {
             imageSize = .init(width: image.width, height: image.height)
         }
         addRequest(withImage: image, callback: callback)
