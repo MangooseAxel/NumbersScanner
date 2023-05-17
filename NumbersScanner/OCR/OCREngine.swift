@@ -1,8 +1,8 @@
 //
-//  GFOcrHelper.swift
+//  OCREngine.swift
 //  GFLiveScanner
 //
-//  Created by Gualtiero Frigerio on 21/11/2020.
+//  Created by Oleksandr Dolomanov on 11.03.2023.
 //
 
 import Foundation
@@ -10,82 +10,51 @@ import UIKit
 import Vision
 
 /// Convenience typealias for the callback function passed to the OCR class
-public typealias GFOcrHelperCallback = (Result<String, Error>) -> Void
+public typealias OCREngineCallback = (Result<String, Error>) -> Void
 
-/// Helper struct for OCRHelper
+/// Helper struct for OCREngine
 /// containing the CGImage to process and the callback to call
 /// once the OCR is done
-fileprivate struct GFOcrHelperRequest {
+fileprivate struct OCREngineRequest {
     var image: CGImage
-    var orientation: CGImagePropertyOrientation
-    var callback: GFOcrHelperCallback
+    var callback: OCREngineCallback
 }
 
 /// Helper class to get text from an image using Vision framework
 /// It is possibile to configure the OCR to perform fast with less accuracy
 /// or slow but with better accuracy
-@available(iOS 13.0, *)
-public class GFOcrHelper {
-    public var useFastRecognition = false
-    
-    public init(fastRecognition: Bool) {
-        self.useFastRecognition = fastRecognition
+
+public class OCREngine {
+    private var genericError: Error {
+        NSError(domain: "GFLiveScanner", code: 0, userInfo: ["Message" : "cannot perform OCR on image"])
     }
-    /// Get an array of strings from a UIImage
-    /// - Parameters:
-    ///   - image: The UIImage to scan for text
-    ///   - callback: the callback with a bool parameter indicating success
-    ///                 and an optional array of string recognized in the image
-    public func getTextFromImage(
-        _ image: UIImage,
-        callback: @escaping GFOcrHelperCallback
-    ) {
-        guard let cgImage = image.cgImage else {
-            callback(.failure(genericError))
-            return
-        }
-        if imageSize == CGSize() {
-            imageSize = image.size
-        }
-        addRequest(withImage: cgImage, orientation: .up, callback: callback)
-    }
+    private var pendingOCRRequests: [OCREngineRequest] = []
+    private var imageSize: CGSize = .zero
 
     /// Get an array of strings from a CGImage
     /// - Parameters:
     ///   - image: The CGImage to scan for text
-    ///   - orientation: The adjusted orientation of the image
     ///   - callback: the callback with a bool parameter indicating success
     ///                 and an optional array of string recognized in the image
     public func getTextFromImage(
         _ image: CGImage,
-        orientation: CGImagePropertyOrientation,
-        callback: @escaping GFOcrHelperCallback
+        callback: @escaping OCREngineCallback
     ) {
         if imageSize == CGSize() {
             imageSize = .init(width: image.width, height: image.height)
         }
-        addRequest(withImage: image, orientation: orientation, callback: callback)
+        addRequest(withImage: image, callback: callback)
     }
-    
-    // MARK: - Private
-    
-    private var genericError:Error {
-        GFLiveScannerUtils.createError(withMessage: "cannot perform OCR on image", code: 0)
-    }
-    private var pendingOCRRequests: [GFOcrHelperRequest] = []
-    private var imageSize: CGSize = .zero
     
     /// Add a request for OCR
     /// - Parameters:
     ///   - image: The CGImage to scan for text
-    ///   - orientation: the CGImage adjusted orientation
     ///   - callback: callback with the recognized text
     private func addRequest(
         withImage image: CGImage,
-        orientation: CGImagePropertyOrientation,
-        callback: @escaping GFOcrHelperCallback
+        callback: @escaping OCREngineCallback
     ) {
-        let request = GFOcrHelperRequest(image: image, orientation: orientation, callback: callback)
+        let request = OCREngineRequest(image: image, callback: callback)
         pendingOCRRequests.append(request)
         if pendingOCRRequests.count == 1 {
             processOCRRequest(request)
@@ -93,11 +62,11 @@ public class GFOcrHelper {
     }
     
     /// Process the next request in queue
-    /// - Parameter request: The OCRHelperRequest to process
-    private func processOCRRequest(_ request: GFOcrHelperRequest) {
+    /// - Parameter request: The OCREngineRequest to process
+    private func processOCRRequest(_ request: OCREngineRequest) {
         let requestHandler = VNImageRequestHandler(
             cgImage: request.image,
-            orientation: request.orientation,
+            orientation: CGImagePropertyOrientation.right,
             options: [:]
         )
 
@@ -110,7 +79,7 @@ public class GFOcrHelper {
             try requestHandler.perform([visionRequest])
         } catch {
             print("Error while performing vision request: \(error).")
-            currentRequestProcessed(strings: nil)
+            currentRequestProcessed(string: nil)
         }
     }
     
@@ -120,7 +89,7 @@ public class GFOcrHelper {
     ///   - error: optional Error
     private func recognizeTextHandler(request: VNRequest, error: Error?) {
         guard let observations = request.results as? [VNRecognizedTextObservation] else {
-            currentRequestProcessed(strings: nil)
+            currentRequestProcessed(string: nil)
             return
         }
 
@@ -138,21 +107,20 @@ public class GFOcrHelper {
             return (candidate.string, CGFloat(distance))
         }
             .sorted { $0.1 < $1.1 } // sort by distance
-//        print(recognizedStrings.map(\.0))
 
-        currentRequestProcessed(strings: recognizedStrings.first?.0)
+        currentRequestProcessed(string: recognizedStrings.first?.0)
     }
     
     /// Called when the current request has been processed
-    /// - Parameter strings: Optional array with recognized text
-    private func currentRequestProcessed(strings: String?) {
+    /// - Parameter string: Optional recognized text
+    private func currentRequestProcessed(string: String?) {
         guard let request = pendingOCRRequests.first else { return }
 
         pendingOCRRequests.removeFirst()
         let callback = request.callback
 
-        if let strings = strings {
-            callback(.success(strings))
+        if let string {
+            callback(.success(string))
         } else {
             callback(.failure(genericError))
         }

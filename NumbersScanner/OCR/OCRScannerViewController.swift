@@ -11,20 +11,17 @@ import AVFoundation
 import Vision
 
 class OCRScannerViewController: UIViewController {
-    private var permissionGranted = false // Flag for permission
-    private let captureSession = AVCaptureSession()
-    private let sessionQueue = DispatchQueue(label: "sessionQueue")
-    private var previewLayer = AVCaptureVideoPreviewLayer()
+
     var delegate: GFLiveScannerDelegate?
-    var screenRect: CGRect! = nil // For view dimensions
-    let ocrHelper = GFOcrHelper(fastRecognition: false)
+    private var screenRect: CGRect! = nil
+    private var permissionGranted = false
 
-    // For detector
-    private var videoOutput = AVCaptureVideoDataOutput()
+    private let captureSession = AVCaptureSession()
+    private let previewLayer = AVCaptureVideoPreviewLayer()
+    private let videoOutput = AVCaptureVideoDataOutput()
 
-    deinit {
-        print("### deinit ViewController")
-    }
+    private let sessionQueue = DispatchQueue(label: "sessionQueue")
+    private let ocrEngine = OCREngine()
 
     override func viewDidLoad() {
         checkPermission()
@@ -147,21 +144,43 @@ extension OCRScannerViewController: AVCaptureVideoDataOutputSampleBufferDelegate
         from connection: AVCaptureConnection
     ) {
 
-        guard let image = GFLiveScannerUtils.getCGImageFromSampleBuffer(sampleBuffer),
+        guard let image = getCGImageFromSampleBuffer(sampleBuffer),
               let croppedImage = image.cropTo(rect: rectOfInterest) else {
             return
         }
 
-        ocrHelper.getTextFromImage(croppedImage, orientation: CGImagePropertyOrientation.right) { result in
+        ocrEngine.getTextFromImage(croppedImage) { result in
             switch result {
                 case .success(let string):
                     self.delegate?.capturedString(string)
-//                    self.capturedStrings = strings
-                case .failure(let error):
-//                    print("error performing ocr \(error)")
+                default:
                     break
             }
         }
+    }
+
+    /// Returns if possible a CGImage from a CMSampleBuffer
+    /// - Parameter sampleBuffer: The CMSampleBuffer to convert to an image
+    /// - Returns: The optional CGImage
+    func getCGImageFromSampleBuffer(_ sampleBuffer: CMSampleBuffer) -> CGImage? {
+        guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
+            return nil
+        }
+        CVPixelBufferLockBaseAddress(pixelBuffer, .readOnly)
+        let baseAddress = CVPixelBufferGetBaseAddress(pixelBuffer)
+        let width = CVPixelBufferGetWidth(pixelBuffer)
+        let height = CVPixelBufferGetHeight(pixelBuffer)
+        let bytesPerRow = CVPixelBufferGetBytesPerRow(pixelBuffer)
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedFirst.rawValue | CGBitmapInfo.byteOrder32Little.rawValue)
+        guard let context = CGContext(data: baseAddress, width: width,
+                                      height: height, bitsPerComponent: 8, bytesPerRow: bytesPerRow,
+                                      space: colorSpace, bitmapInfo: bitmapInfo.rawValue) else {
+            return nil
+        }
+        let cgImage = context.makeImage()
+
+        return cgImage
     }
 }
 
@@ -174,11 +193,4 @@ public protocol GFLiveScannerDelegate {
     /// - Parameter strings: The strings detected during live scan
 
     func capturedString(_ string: String)
-
-    /// Called when the live captured ended
-    /// May happen because an error occurred or because the
-    /// view controller has been closed via the optional close button
-    /// - Parameter withError: The optional error
-
-    func liveCaptureEnded(withError: Error?)
 }

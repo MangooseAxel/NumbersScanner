@@ -17,9 +17,7 @@
 		FA7563D229B6625300B5C947 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA7563D129B6625300B5C947 /* Preview Assets.xcassets */; };
 		FA7563F529B67D2500B5C947 /* OCRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7563F429B67D2500B5C947 /* OCRView.swift */; };
 		FA75640529B688A100B5C947 /* OCRScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA75640429B688A100B5C947 /* OCRScannerViewController.swift */; };
-		FA75640929B68AB800B5C947 /* GFLiveScannerUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA75640829B68AB800B5C947 /* GFLiveScannerUtils.swift */; };
-		FA75640B29B68AD600B5C947 /* GFOcrHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA75640A29B68AD600B5C947 /* GFOcrHelper.swift */; };
-		FAA978D729BCE84C00965823 /* TesseractOCRScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA978D629BCE84C00965823 /* TesseractOCRScanner.swift */; };
+		FA75640B29B68AD600B5C947 /* OCREngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA75640A29B68AD600B5C947 /* OCREngine.swift */; };
 		FAAB83D329C36117008E1235 /* TableManipulatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAB83D229C36117008E1235 /* TableManipulatorView.swift */; };
 		FAAB83D529C362CC008E1235 /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAB83D429C362CC008E1235 /* ContentViewModel.swift */; };
 		FAC43E6629DB3B2E005DF0FB /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC43E6529DB3B2E005DF0FB /* ChartView.swift */; };
@@ -39,9 +37,7 @@
 		FA7563D829B6663F00B5C947 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		FA7563F429B67D2500B5C947 /* OCRView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRView.swift; sourceTree = "<group>"; };
 		FA75640429B688A100B5C947 /* OCRScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRScannerViewController.swift; sourceTree = "<group>"; };
-		FA75640829B68AB800B5C947 /* GFLiveScannerUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GFLiveScannerUtils.swift; sourceTree = "<group>"; };
-		FA75640A29B68AD600B5C947 /* GFOcrHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GFOcrHelper.swift; sourceTree = "<group>"; };
-		FAA978D629BCE84C00965823 /* TesseractOCRScanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TesseractOCRScanner.swift; sourceTree = "<group>"; };
+		FA75640A29B68AD600B5C947 /* OCREngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OCREngine.swift; sourceTree = "<group>"; };
 		FAAB83D229C36117008E1235 /* TableManipulatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableManipulatorView.swift; sourceTree = "<group>"; };
 		FAAB83D429C362CC008E1235 /* ContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewModel.swift; sourceTree = "<group>"; };
 		FAC43E6529DB3B2E005DF0FB /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
@@ -59,6 +55,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		FA3992492A14FBDE00AAC015 /* OCR */ = {
+			isa = PBXGroup;
+			children = (
+				FA75640A29B68AD600B5C947 /* OCREngine.swift */,
+				FA75640429B688A100B5C947 /* OCRScannerViewController.swift */,
+				FA7563F429B67D2500B5C947 /* OCRView.swift */,
+			);
+			path = OCR;
+			sourceTree = "<group>";
+		};
 		FA7563BE29B6625200B5C947 = {
 			isa = PBXGroup;
 			children = (
@@ -78,24 +84,13 @@
 		FA7563C929B6625200B5C947 /* NumbersScanner */ = {
 			isa = PBXGroup;
 			children = (
-				FAA978D629BCE84C00965823 /* TesseractOCRScanner.swift */,
-				FA75640829B68AB800B5C947 /* GFLiveScannerUtils.swift */,
+				FA8271D72A14FCAD005546FF /* Views */,
+				FA8271D62A14FCA0005546FF /* Extensions */,
+				FA3992492A14FBDE00AAC015 /* OCR */,
 				FA7563D829B6663F00B5C947 /* Info.plist */,
 				FA7563CA29B6625200B5C947 /* NumbersScannerApp.swift */,
-				FA7563CC29B6625200B5C947 /* ContentView.swift */,
 				FA7563CE29B6625300B5C947 /* Assets.xcassets */,
 				FA7563D029B6625300B5C947 /* Preview Content */,
-				FA7563F429B67D2500B5C947 /* OCRView.swift */,
-				FA75640429B688A100B5C947 /* OCRScannerViewController.swift */,
-				FA75640A29B68AD600B5C947 /* GFOcrHelper.swift */,
-				FA1552C929B927E70038985B /* CGImageExtension.swift */,
-				FAC4D6D129BBA7A00043D753 /* CGPointExtension.swift */,
-				FA3950B529BE714F009A5A85 /* ScannerSheetView.swift */,
-				FA1DC51929C2347B00BF0DAD /* ViewExtension.swift */,
-				FAAB83D229C36117008E1235 /* TableManipulatorView.swift */,
-				FAAB83D429C362CC008E1235 /* ContentViewModel.swift */,
-				FA5C637129CB389D00158C21 /* ShareSheetView.swift */,
-				FAC43E6529DB3B2E005DF0FB /* ChartView.swift */,
 			);
 			path = NumbersScanner;
 			sourceTree = "<group>";
@@ -106,6 +101,29 @@
 				FA7563D129B6625300B5C947 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		FA8271D62A14FCA0005546FF /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				FA1552C929B927E70038985B /* CGImageExtension.swift */,
+				FAC4D6D129BBA7A00043D753 /* CGPointExtension.swift */,
+				FA1DC51929C2347B00BF0DAD /* ViewExtension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		FA8271D72A14FCAD005546FF /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				FA7563CC29B6625200B5C947 /* ContentView.swift */,
+				FA3950B529BE714F009A5A85 /* ScannerSheetView.swift */,
+				FAAB83D229C36117008E1235 /* TableManipulatorView.swift */,
+				FAAB83D429C362CC008E1235 /* ContentViewModel.swift */,
+				FA5C637129CB389D00158C21 /* ShareSheetView.swift */,
+				FAC43E6529DB3B2E005DF0FB /* ChartView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -185,14 +203,12 @@
 				FAC4D6D229BBA7A00043D753 /* CGPointExtension.swift in Sources */,
 				FA1552CA29B927E70038985B /* CGImageExtension.swift in Sources */,
 				FA5C637229CB389D00158C21 /* ShareSheetView.swift in Sources */,
-				FA75640929B68AB800B5C947 /* GFLiveScannerUtils.swift in Sources */,
 				FAC43E6629DB3B2E005DF0FB /* ChartView.swift in Sources */,
 				FA3950B629BE714F009A5A85 /* ScannerSheetView.swift in Sources */,
 				FA1DC51A29C2347B00BF0DAD /* ViewExtension.swift in Sources */,
-				FA75640B29B68AD600B5C947 /* GFOcrHelper.swift in Sources */,
+				FA75640B29B68AD600B5C947 /* OCREngine.swift in Sources */,
 				FA75640529B688A100B5C947 /* OCRScannerViewController.swift in Sources */,
 				FA7563F529B67D2500B5C947 /* OCRView.swift in Sources */,
-				FAA978D729BCE84C00965823 /* TesseractOCRScanner.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

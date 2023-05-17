@@ -13,34 +13,19 @@ struct OCRView: UIViewControllerRepresentable {
     @Binding var scannedText: String
     @Binding var scannedNumber: Double?
 
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self)
-    }
-
     func makeUIViewController(context: Context) -> OCRScannerViewController {
         let viewController = OCRScannerViewController()
         viewController.delegate = context.coordinator
-        viewController.navigationItem.title = "Scanner"
         return viewController
     }
 
     func updateUIViewController(_ uiViewController: OCRScannerViewController, context: Context) {}
 
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+
     class Coordinator: NSObject, GFLiveScannerDelegate {
-        func capturedString(_ string: String) {
-//            print(string)
-
-            parent.scannedText = "\(string)"
-
-            guard let number = parseNumber(text: string) else { return }
-
-            parent.scannedNumber = number
-        }
-
-        func liveCaptureEnded(withError: Error?) {
-            print(withError ?? "")
-        }
-
         var parent: OCRView
 
         init(_ parent: OCRView) {
@@ -48,8 +33,16 @@ struct OCRView: UIViewControllerRepresentable {
             super.init()
         }
 
-        deinit {
-            print("### deinit coordinator")
+        func capturedString(_ string: String) {
+            parent.scannedText = "\(string)"
+
+            if let number = parseNumber(text: string) {
+                parent.scannedNumber = number
+            }
+        }
+
+        func liveCaptureEnded(withError: Error?) {
+            print(withError ?? "")
         }
 
         private func parseNumber(text: String) -> Double? {
