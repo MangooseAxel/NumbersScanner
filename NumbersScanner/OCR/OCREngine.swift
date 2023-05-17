@@ -25,9 +25,6 @@ fileprivate struct OCREngineRequest {
 /// or slow but with better accuracy
 
 public class OCREngine {
-    private var genericError: Error {
-        NSError(domain: "GFLiveScanner", code: 0, userInfo: ["Message" : "cannot perform OCR on image"])
-    }
     private var pendingOCRRequests: [OCREngineRequest] = []
     private var imageSize: CGSize = .zero
 
@@ -122,7 +119,11 @@ public class OCREngine {
         if let string {
             callback(.success(string))
         } else {
-            callback(.failure(genericError))
+            callback(.failure(NSError(
+                domain: "GFLiveScanner",
+                code: 0,
+                userInfo: ["Message" : "cannot perform OCR on image"]
+            )))
         }
     }
 }
