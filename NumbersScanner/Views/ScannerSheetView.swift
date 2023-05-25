@@ -7,11 +7,6 @@
 
 import SwiftUI
 
-struct FocusedCell: Hashable {
-    let row: Int
-    let column: Int
-}
-
 struct ScannerSheetView: View {
     @Binding var scannedText: String
     @Binding var scannedNumber: Double?
@@ -30,7 +25,7 @@ struct ScannerSheetView: View {
         NavigationStack {
             GroupBox {
                 ZStack {
-                    OCRView(scannedText: $scannedText, scannedNumber: $scannedNumber)
+                    OCRScannerView(scannedText: $scannedText, scannedNumber: $scannedNumber)
 
                     VStack(alignment: .leading) {
                         Spacer()

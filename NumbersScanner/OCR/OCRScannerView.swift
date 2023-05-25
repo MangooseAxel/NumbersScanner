@@ -1,5 +1,5 @@
 //
-//  OCRView.swift
+//  OCRScannerView.swift
 //  NumbersScanner
 //
 //  Created by Oleksandr Dolomanov on 06.03.2023.
@@ -8,7 +8,7 @@
 import SwiftUI
 import Combine
 
-struct OCRView: UIViewControllerRepresentable {
+struct OCRScannerView: UIViewControllerRepresentable {
 
     @Binding var scannedText: String
     @Binding var scannedNumber: Double?
@@ -26,9 +26,9 @@ struct OCRView: UIViewControllerRepresentable {
     }
 
     class Coordinator: NSObject, GFLiveScannerDelegate {
-        var parent: OCRView
+        var parent: OCRScannerView
 
-        init(_ parent: OCRView) {
+        init(_ parent: OCRScannerView) {
             self.parent = parent
             super.init()
         }
@@ -39,10 +39,6 @@ struct OCRView: UIViewControllerRepresentable {
             if let number = parseNumber(text: string) {
                 parent.scannedNumber = number
             }
-        }
-
-        func liveCaptureEnded(withError: Error?) {
-            print(withError ?? "")
         }
 
         private func parseNumber(text: String) -> Double? {

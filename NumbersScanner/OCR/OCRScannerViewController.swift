@@ -28,6 +28,10 @@ class OCRScannerViewController: UIViewController {
         startScanning()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        stopScanning()
+    }
+
     func startScanning() {
         sessionQueue.async { [unowned self] in
             guard permissionGranted else { return }

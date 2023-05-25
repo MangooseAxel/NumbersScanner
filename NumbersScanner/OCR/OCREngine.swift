@@ -5,7 +5,6 @@
 //  Created by Oleksandr Dolomanov on 11.03.2023.
 //
 
-import Foundation
 import UIKit
 import Vision
 
